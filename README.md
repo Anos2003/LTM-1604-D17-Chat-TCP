@@ -78,3 +78,64 @@ Cài đặt JDK 11+ → Kiểm tra bằng java -version.
 Cài đặt Maven/Gradle → Kiểm tra bằng mvn -v.
 
 (Tuỳ chọn) Cài đặt MySQL để lưu dữ liệu.
+📂 Cấu trúc project
+ChatRMI/
+├─ common/        # model + interface
+├─ server/        # ChatServerImpl, ChatServerMain
+├─ client/        # ClientApp + JavaFX Controller
+├─ db/            # schema_chat.sql
+
+🗄️ Tạo cơ sở dữ liệu (schema_chat.sql)
+CREATE DATABASE chat_rmi;
+USE chat_rmi;
+
+CREATE TABLE users (...);
+CREATE TABLE groups (...);
+CREATE TABLE messages (...);
+
+▶️ Chạy hệ thống
+
+Mở RMI Registry: rmiregistry 1099
+
+Chạy Server:
+
+java server.ChatServerMain
+
+
+Chạy Client (JavaFX):
+
+java client.ClientApp
+
+6. 🔒 Lưu ý an toàn & bảo mật
+
+🛡️ Không lưu mật khẩu dạng plaintext → Hash (bcrypt/argon2).
+
+🔐 RMI không có mã hóa mặc định → triển khai TLS/SSL hoặc VPN.
+
+⚠️ Kiểm soát truy cập RMI Registry (chỉ LAN, firewall).
+
+📜 Lưu log đăng nhập & tin nhắn để giám sát.
+
+👥 Phân quyền rõ ràng giữa User và Admin.
+
+7. 📌 Checklist trước khi nộp báo cáo
+
+ 🔑 Hash mật khẩu trong DB
+
+ 📦 Import DB schema thành công
+
+ 🏃 Server + Client chạy ổn định qua RMI Registry
+
+ 🎨 JavaFX giao diện không lỗi FXML
+
+ 📜 Tài liệu cài đặt kèm command đầy đủ
+
+8. 🌟 Tầm nhìn mở rộng
+
+🌍 Hỗ trợ Web/Mobile client bằng WebSocket hoặc gRPC.
+
+🚦 Thêm tính năng rate-limiting, chống spam.
+
+📱 Phát triển ứng dụng Android dùng chung server backend.
+
+🔭 Kết hợp chat nhóm với call/video (WebRTC).

@@ -4,7 +4,7 @@
     </a>
 </h2>
 <h2 align="center">
-  Hệ thống Chat Nhóm bằng RMI
+  Hệ thống Chat Nhóm bằng RMI +JavaFX
 </h2>
 <div align="center">
     <p align="center">

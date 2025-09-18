@@ -18,7 +18,7 @@
 [![DaiNam University](https://img.shields.io/badge/DaiNam%20University-orange?style=for-the-badge)](https://dainam.edu.vn)
 
 </div>
-# ChatRMI - Ứng dụng Chat Nhóm với Java RMI + JavaFX
+
 
 ## 📌 Giới thiệu
 `ChatRMI` là một ứng dụng **chat nhóm thời gian thực** được xây dựng bằng:

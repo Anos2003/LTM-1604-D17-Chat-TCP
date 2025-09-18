@@ -18,201 +18,112 @@
 [![DaiNam University](https://img.shields.io/badge/DaiNam%20University-orange?style=for-the-badge)](https://dainam.edu.vn)
 
 </div>
-1. 📖 Giới thiệu hệ thống
+# ChatRMI - Ứng dụng Chat Nhóm với Java RMI + JavaFX
 
-Trong bối cảnh 🌐 công nghệ thông tin phát triển nhanh chóng, nhu cầu giao tiếp, trao đổi và làm việc từ xa trở nên ngày càng cần thiết.
-Ứng dụng 💬 Chat Nhóm bằng RMI ra đời nhằm hỗ trợ:
+## 📌 Giới thiệu
+`ChatRMI` là một ứng dụng **chat nhóm thời gian thực** được xây dựng bằng:
+- **Java RMI**: hỗ trợ giao tiếp client-server và callback 2 chiều.
+- **JavaFX**: xây dựng giao diện đồ họa.
+- **JSON (Gson)**: lưu trữ thông tin user và nhóm.
 
-👥 Người dùng có thể đăng nhập, tham gia nhóm chat và trò chuyện theo thời gian thực.
+Ứng dụng cho phép nhiều người dùng đăng nhập, tham gia nhóm chat và gửi/nhận tin nhắn theo thời gian thực.
 
-🏷️ Quản lý các nhóm chat (tạo mới, tham gia, thoát nhóm).
+---
 
-✉️ Gửi và nhận tin nhắn ngay lập tức nhờ cơ chế Remote Method Invocation (RMI).
+## 🏗️ Kiến trúc hệ thống
 
-📜 Xem lại lịch sử trò chuyện đã lưu trong cơ sở dữ liệu.
+Hệ thống sử dụng mô hình **Client - Server**:
+- **Server**: quản lý danh sách nhóm, user, phân phối tin nhắn đến tất cả client trong cùng nhóm.
+- **Client**: gửi tin nhắn đến server và lắng nghe callback để nhận tin nhắn mới.
 
-Đối với quản trị viên (Admin):
+### Luồng hoạt động:
+1. User đăng nhập và tham gia vào một nhóm chat.
+2. Client đăng ký callback với server.
+3. Khi có user gửi tin nhắn:
+   - Server nhận tin nhắn → phát lại (broadcast) đến tất cả client trong nhóm.
+   - Client nhận callback → hiển thị tin nhắn trên giao diện.
 
-👤 Quản lý tài khoản người dùng.
+---
 
-🛠️ Quản lý nhóm chat, phân quyền.
-
-📊 Theo dõi log hệ thống và hoạt động của người dùng.
-
-2. 🎯 Mục tiêu hệ thống
-🔹 Người dùng:
-
-📝 Đăng ký / Đăng nhập.
-
-💬 Tham gia vào một hoặc nhiều nhóm chat.
-
-✍️ Gửi và nhận tin nhắn thời gian thực.
-
-📜 Xem lại lịch sử tin nhắn.
-
-🔹 Quản trị viên:
-
-🧑‍💻 Quản lý người dùng (thêm, xóa, khóa tài khoản).
-
-🗂️ Quản lý nhóm chat (tạo, sửa, xóa).
-
-📈 Thống kê (số lượng người dùng online, số tin nhắn đã gửi).
-
-3. 🛠️ Ngôn ngữ & Công nghệ sử dụng
-
-☕ Java (JDK 11+)
-
-🔗 Java RMI – Remote Method Invocation
-
-🎨 JavaFX (FXML) – thiết kế giao diện
-
-🗄️ MySQL / SQLite – cơ sở dữ liệu
-
-📦 Maven/Gradle – công cụ quản lý build
-
-💻 IDE: Eclipse / IntelliJ IDEA
-
-🌍 GitHub – quản lý mã nguồn và version
-
-4. 📂 Cấu trúc hệ thống
+## 📂 Cấu trúc dự án
 ChatRMI/
-├─ 📁 common/        # Chứa model & interface dùng chung
-│   ├─ model/        # Lớp User, Message, Group
-│   └─ interfaces/   # ChatServerInterface.java
-│
-├─ 📁 server/        # Chứa logic của server
-│   ├─ ChatServerImpl.java
-│   ├─ ChatServerMain.java
-│   └─ utils/
-│
-├─ 📁 client/        # Ứng dụng JavaFX
-│   ├─ ClientApp.java
-│   ├─ controller/
-│   └─ fxml/
-│
-├─ 📁 db/            # Schema SQL (schema_chat.sql)
-└─ 📄 pom.xml        # Cấu hình Maven
+├─ src/
+│ ├─ common/
+│ │ ├─ model/
+│ │ │ ├─ User.java # Thông tin user
+│ │ │ ├─ Message.java # Đối tượng tin nhắn
+│ │ │ └─ ChatGroup.java # Đối tượng nhóm chat
+│ │ └─ interfaces/
+│ │ ├─ ChatServerInterface.java # Interface server
+│ │ └─ ChatClientInterface.java # Interface callback client
+│ ├─ server/
+│ │ ├─ ChatServerImpl.java # Triển khai server
+│ │ └─ ChatServerMain.java # Chạy server
+│ └─ client/
+│ └─ ClientApp.java # Ứng dụng JavaFX client
+├─ lib/
+│ └─ gson-2.10.1.jar # Thư viện Gson
+├─ users.json # Tự tạo khi chạy lần đầu (lưu user)
+└─ groups.json # Tự tạo khi chạy lần đầu (lưu nhóm)
 
-5. 🗄️ Cơ sở dữ liệu
-Bảng chính:
+---
 
-👤 users
+## ⚙️ Yêu cầu hệ thống
+- **Java JDK 11+**
+- **JavaFX SDK**
+- **Gson library** (đã kèm trong thư mục `lib/`)
+- IDE: Eclipse / IntelliJ IDEA / VS Code
 
-id, username, password_hash, role, created_at
+---
 
-🏷️ groups
+## ▶️ Cách chạy ứng dụng
 
-id, name, created_by, created_at
+### 1. Clone dự án
+```bash
+git clone https://github.com/<your-username>/ChatRMI.git
+cd ChatRMI
+2. Compile
 
-💬 messages
+Thêm gson-2.10.1.jar vào classpath khi build.
 
-id, group_id, sender_id, content, sent_at
-
-6. 🏗️ Sơ đồ kiến trúc hệ thống
-         👤 Client A (JavaFX)
-               |
-         👤 Client B (JavaFX)
-               |
-         👤 Client C (JavaFX)
-               |
-        -----------------------
-        |     🌐 RMI Server    |
-        |  (ChatServerImpl)   |
-        -----------------------
-          |           |
-   📂 Database    📜 RMI Registry
-   (MySQL/SQLite)     (Port 1099)
-
-
-📌 Luồng hoạt động:
-
-Người dùng 👤 thao tác trên Client (giao diện JavaFX).
-
-Client gọi hàm trên ChatServerInterface thông qua 📜 RMI Registry.
-
-🌐 Server xử lý request, lưu vào 📂 Database nếu cần.
-
-Server gửi phản hồi hoặc broadcast message đến các client khác trong nhóm.
-
-7. ⚙️ Các bước cài đặt & chạy
-🔧 Chuẩn bị môi trường
-
-☕ Cài đặt JDK 11+.
-
-📦 Cài đặt Maven.
-
-🗄️ Cài đặt MySQL.
-
-▶️ Cài đặt & chạy
-
-⬇️ Clone project:
-
-git clone https://github.com/your-username/chat-rmi.git
-
-
-🗄️ Import cơ sở dữ liệu:
-
-mysql -u root -p < db/schema_chat.sql
-
-
-🚀 Khởi động RMI Registry:
-
-rmiregistry 1099
-
-
-🖥️ Chạy server:
-
+3. Chạy server
+cd src
+rmiregistry 1099 &
 java server.ChatServerMain
+4. Chạy client
 
-
-💻 Mở client (JavaFX):
-
+Mỗi client chạy ở một cửa sổ khác:
 java client.ClientApp
+💡 Tính năng chính
 
-8. 🔒 Bảo mật & An toàn
+Đăng nhập với username.
 
-🛡️ Hash mật khẩu bằng bcrypt/argon2.
+Tự động tạo/lưu user.json và groups.json.
 
-🔐 Mã hóa RMI bằng SSL/TLS hoặc triển khai trong VPN.
+Tham gia nhóm chat có sẵn.
 
-🔥 Cấu hình tường lửa để giới hạn cổng 1099.
+Chat 2 chiều thời gian thực qua RMI callback.
 
-📝 Ghi log đăng nhập & tin nhắn.
+Hiển thị tên người gửi, thời gian gửi.
 
-👥 Phân quyền rõ ràng User/Admin.
+Hỗ trợ nhiều client cùng lúc.
 
-9. 🌟 Hướng phát triển trong tương lai
+🔮 Định hướng phát triển
 
-📱 Hỗ trợ client trên mobile (Android/iOS).
+Thêm tính năng emoji, gửi ảnh trong tin nhắn.
 
-📡 Tích hợp WebSocket/gRPC để tăng hiệu suất.
+Quản lý nhóm: tạo, xóa, mời user.
 
-📁 Cho phép gửi file, hình ảnh, emoji.
+Tích hợp cơ sở dữ liệu (MySQL, MongoDB) thay cho JSON.
 
-🔭 Phân quyền nâng cao (moderator, super admin).
+Mã hóa tin nhắn để tăng bảo mật.
 
-📊 Dashboard giám sát real-time cho admin.
+👨‍💻 Tác giả
 
-10. ✅ Checklist trước khi bàn giao
+Dự án được xây dựng phục vụ học tập và nghiên cứu về:
 
- 🔑 Hash mật khẩu trong DB
+Lập trình mạng (Java RMI)
 
- 📦 Import database thành công
+Ứng dụng desktop với JavaFX
 
- 🏃 Server + Client hoạt động ổn định
-
- 🎨 Giao diện JavaFX đầy đủ (login, register, lobby, chat, admin)
-
- 📜 README + hướng dẫn triển khai rõ ràng
-
-11. 🏁 Kết luận
-
-Ứng dụng 💬 Chat Nhóm bằng RMI là một dự án mang tính học thuật giúp sinh viên:
-
-Hiểu rõ cách triển khai hệ thống phân tán bằng Java.
-
-Rèn luyện kỹ năng lập trình giao diện (JavaFX).
-
-Thực hành kết nối cơ sở dữ liệu & quản lý người dùng.
-
-Tích hợp bảo mật cơ bản cho ứng dụng mạng.
+Mô hình Client - Server

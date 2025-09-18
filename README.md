@@ -100,19 +100,37 @@ java server.ChatServerMain
 
 Mỗi client chạy ở một cửa sổ khác:
 java client.ClientApp
+🏗️ Kiến trúc hệ thống
+
+Hệ thống Chat Nhóm bằng Java RMI được thiết kế theo mô hình Client – Server – Database, với thành phần chính như sau:
 💡 Tính năng chính
+<pre>
+         👤 Client A (JavaFX)
+               |
+         👤 Client B (JavaFX)
+               |
+         👤 Client C (JavaFX)
+               |
+        -------------------------
+        |      🌐 RMI Server     |
+        |   (ChatServerImpl)    |
+        -------------------------
+          |               |
+   📂 Database         📜 RMI Registry
+ (MySQL/SQLite)         (Port 1099)
 
-Đăng nhập với username.
+</pre>
 
-Tự động tạo/lưu user.json và groups.json.
+# 📌 Giao diện hệ thống Chat RMI
 
-Tham gia nhóm chat có sẵn.
+## 1. 🔑 Giao diện Đăng nhập/Đăng ký
+![Login/Register](docs/login.png)
 
-Chat 2 chiều thời gian thực qua RMI callback.
+## 2. 🏠 Giao diện Sảnh chờ
+![Lobby](docs/lobby.png)
 
-Hiển thị tên người gửi, thời gian gửi.
-
-Hỗ trợ nhiều client cùng lúc.
+## 3. 💬 Giao diện Phòng chat
+![Chat Window](docs/chat.png)
 
 🔮 Định hướng phát triển
 

@@ -46,6 +46,7 @@ Hệ thống sử dụng mô hình **Client - Server**:
 ---
 
 ## 📂 Cấu trúc dự án
+<>
 src/
  ├─ client/
  │   ├─ ClientApp.java        <-- chạy client (JavaFX App)
@@ -70,7 +71,7 @@ src/
  ├─ lib/
  │   └─ gson-2.10.1.jar
 
-
+</pre>
 ---
 
 ## ⚙️ Yêu cầu hệ thống

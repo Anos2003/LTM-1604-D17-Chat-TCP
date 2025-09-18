@@ -46,25 +46,30 @@ Hệ thống sử dụng mô hình **Client - Server**:
 ---
 
 ## 📂 Cấu trúc dự án
-ChatRMI/
-├─ src/
-│ ├─ common/
-│ │ ├─ model/
-│ │ │ ├─ User.java # Thông tin user
-│ │ │ ├─ Message.java # Đối tượng tin nhắn
-│ │ │ └─ ChatGroup.java # Đối tượng nhóm chat
-│ │ └─ interfaces/
-│ │ ├─ ChatServerInterface.java # Interface server
-│ │ └─ ChatClientInterface.java # Interface callback client
-│ ├─ server/
-│ │ ├─ ChatServerImpl.java # Triển khai server
-│ │ └─ ChatServerMain.java # Chạy server
-│ └─ client/
-│ └─ ClientApp.java # Ứng dụng JavaFX client
-├─ lib/
-│ └─ gson-2.10.1.jar # Thư viện Gson
-├─ users.json # Tự tạo khi chạy lần đầu (lưu user)
-└─ groups.json # Tự tạo khi chạy lần đầu (lưu nhóm)
+src/
+ ├─ client/
+ │   ├─ ClientApp.java        <-- chạy client (JavaFX App)
+ │   ├─ LoginWindow.java      <-- giao diện đăng nhập & đăng ký
+ │   ├─ LobbyWindow.java      <-- giao diện sảnh chờ, chứa 3 nhóm chat mặc định
+ │   └─ ChatWindow.java       <-- giao diện chat nhóm
+ │
+ ├─ common/
+ │   ├─ interfaces/
+ │   │   ├─ ChatClientInterface.java
+ │   │   └─ ChatServerInterface.java
+ │   │
+ │   ├─ model/
+ │   │   ├─ ChatGroup.java
+ │   │   ├─ Message.java
+ │   │   └─ User.java
+ │
+ ├─ server/
+ │   ├─ ChatServerImpl.java
+ │   └─ ChatServerMain.java   <-- chạy server
+ │
+ ├─ lib/
+ │   └─ gson-2.10.1.jar
+
 
 ---
 

@@ -124,17 +124,14 @@ Hệ thống Chat Nhóm bằng Java RMI được thiết kế theo mô hình Cli
 # 📌 Giao diện hệ thống Chat RMI
 
 ## 1. 🔑 Giao diện Đăng nhập/Đăng ký
-![Login/Register](docs/login.png)
-<img src="./images/login.png" alt="Login/Register" width="300"/>
-
+<img src="./docs/login.png" alt="Login/Register" width="300"/>
 
 ## 2. 🏠 Giao diện Sảnh chờ
-![Lobby](docs/lobby.png)
-<img src="./images/lobby.png" alt="Lobby" width="300"/>
-## 3. 💬 Giao diện Phòng chat
-![Chat Window](docs/chat.png)
+<img src="./docs/lobby.png" alt="Lobby" width="300"/>
 
-<img src="./images/chat.png" alt="Chat Window" width="300"/>
+## 3. 💬 Giao diện Phòng chat
+<img src="./docs/chat.png" alt="Chat Window" width="300"/>
+
 🔮 Định hướng phát triển
 
 Thêm tính năng emoji, gửi ảnh trong tin nhắn.

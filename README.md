@@ -46,7 +46,7 @@ Hệ thống sử dụng mô hình **Client - Server**:
 ---
 
 ## 📂 Cấu trúc dự án
-<>
+<pre>
 src/
  ├─ client/
  │   ├─ ClientApp.java        <-- chạy client (JavaFX App)

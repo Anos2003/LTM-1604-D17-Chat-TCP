@@ -59,17 +59,12 @@ Mục tiêu là minh họa cách xây dựng ứng dụng phân tán bằng **Ja
 - 🔑 **Login / Register**  
   ```markdown
   ![Login/Register](./docs/login.png)
-  <img src="./docs/login.png" alt="Login/Register" width="380"/>
   🏠 Lobby (Sảnh chờ)
-
 ![Lobby](./docs/lobby.png)
-<img src="./docs/lobby.png" alt="Lobby" width="380"/>
-
 
 💬 Chat Window (Phòng chat)
 
 ![Chat Window](./docs/chat.png)
-<img src="./docs/chat.png" alt="Chat Window" width="380"/>
 
 4. 🚀 Các project mẫu / demo
 

@@ -37,7 +37,7 @@ Mục tiêu là minh họa cách xây dựng ứng dụng phân tán bằng **Ja
 - 🗂️ Quản lý nhóm (tạo/xoá/assign)
 - 📊 Thống kê cơ bản (user online, số message...)
 
----
+
 
 ## 2. 🛠️ Ngôn ngữ & Công nghệ chính
 - ☕ **Java (JDK 11+)**  
@@ -51,14 +51,14 @@ Mục tiêu là minh họa cách xây dựng ứng dụng phân tán bằng **Ja
 **Môi trường chạy (ví dụ):**
 - JDK 11+, Maven, MySQL, Port RMI: `1099`.
 
----
+
 
 ## 3. 🖼️ Hình ảnh các chức năng
-**Hình minh họa (đặt file ảnh trong `docs/` hoặc `images/` cùng cấp với README.md):**
 
 - 🔑 **Login / Register**  
   ```markdown
   ![Login/Register](./docs/login.png)
+
   🏠 Lobby (Sảnh chờ)
 ![Lobby](./docs/lobby.png)
 
@@ -66,191 +66,116 @@ Mục tiêu là minh họa cách xây dựng ứng dụng phân tán bằng **Ja
 
 ![Chat Window](./docs/chat.png)
 
-4. 🚀 Các project mẫu / demo
+## 4.📝 Các bước cài đặt
+<pre>
+Bước 1: Chuẩn bị môi trường
 
-Một số variant bạn có thể demo:
-
-Demo cơ bản: RMI Registry + 1 Server + nhiều Client (text chat).
-
-Nâng cao: Authentication + persistence (MySQL), broadcast grouping.
-
-Security-aware: RMI over SSL (custom RMISocketFactory) hoặc chạy RMI trong VPN.
-
-5. ⚙️ Các bước cài đặt & chạy (từng bước 1 — copy/paste được)
-Bước 0 — File cần chuẩn bị (trong repo)
-
-README.md (file này)
-
-docs/login.png, docs/lobby.png, docs/chat.png (ảnh giao diện)
-
-Source code Java: src/ (client, common, server)
-
-db/schema_chat.sql (SQL schema)
-
-pom.xml hoặc build.gradle
-
-Bước 1 — Cài môi trường
-
-Cài JDK 11+ và set JAVA_HOME.
-Kiểm tra:
+Kiểm tra Java:
+Mở terminal/command prompt và chạy:
 
 java -version
+javac -version
+---
 
+→ Đảm bảo cả hai lệnh đều hiển thị Java 8 trở lên.
 
-Cài Maven (nếu dùng Maven):
-
-mvn -v
-
-
-Cài MySQL (hoặc Docker MySQL):
-
-Nếu Docker:
-
-docker run --name chat-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=chat_rmi -p 3306:3306 -d mysql:8
-
-Bước 2 — Clone source code
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-
-Bước 3 — Tạo database & import schema
-
-Mở MySQL (phpMyAdmin / MySQL Workbench / CLI) và import file db/schema_chat.sql.
-
-Ví dụ dùng CLI:
-
-mysql -u root -p
--- trong mysql prompt:
-CREATE DATABASE chat_rmi;
-USE chat_rmi;
-SOURCE db/schema_chat.sql;
-
-
-SQL mẫu (db/schema_chat.sql)
-
-CREATE DATABASE IF NOT EXISTS chat_rmi;
-USE chat_rmi;
-
-CREATE TABLE users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50) UNIQUE NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
-  role VARCHAR(20) DEFAULT 'user',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE groups (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  created_by INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE messages (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  group_id INT,
-  sender_id INT,
-  content TEXT,
-  sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (group_id) REFERENCES groups(id),
-  FOREIGN KEY (sender_id) REFERENCES users(id)
-);
-
-Bước 4 — Cấu hình kết nối DB (file config)
-
-Mở file cấu hình (ví dụ server/src/main/resources/application.properties hoặc server/config.properties) và sửa:
-
-db.url=jdbc:mysql://localhost:3306/chat_rmi
-db.user=root
-db.password=       # nếu có mật khẩu thì điền vào
-rmi.registry.port=1099
-rmi.bind.name=ChatServer
-
-Bước 5 — Build project
-
-Nếu dùng Maven:
-
-mvn clean package
-
-
-Hoặc build từng module trong IDE (Eclipse/IntelliJ).
-
-Bước 6 — Khởi chạy RMI Registry
-
-Cách 1 (terminal):
-
-Mở terminal ở thư mục project (nơi classpath có các .class cần thiết) và chạy:
-
-rmiregistry 1099
-
-
-Nếu rmiregistry không nhận classpath, bạn có thể khởi chạy programmatically trong ChatServerMain bằng:
-
-LocateRegistry.createRegistry(1099);
-
-
-Cách 2 (trong code):
-
-Trong ChatServerMain trước khi Naming.rebind(...), gọi LocateRegistry.createRegistry(1099);.
-
-Bước 7 — Chạy Server
-
-Chạy class ChatServerMain (trong IDE hoặc jar):
-
-java -cp target/ChatRMI-1.0.jar server.ChatServerMain
-
-
-Server sẽ bind remote object:
-
-Naming.rebind("rmi://localhost:1099/ChatServer", serverImpl);
-
-Bước 8 — Chạy Client (JavaFX)
-
-Trong IDE: chạy client.ClientApp (JavaFX main).
-Hoặc run jar:
-
-java -jar client/target/chat-client.jar
-
-
-Client lookup server:
-
-ChatServerInterface server = (ChatServerInterface) Naming.lookup("rmi://localhost:1099/ChatServer");
-
-Bước 9 — Thử nghiệm
-
-Mở nhiều client (trên cùng máy hoặc máy khác trong LAN).
-
-Đăng nhập (hoặc register).
-
-Vào Lobby → chọn group → Join → gửi tin nhắn.
-
-Kiểm tra DB: messages đã được lưu.
-6. 📁 Cấu trúc dự án (ví dụ)
+Chuẩn bị IDE:
+Khuyến nghị sử dụng Eclipse IDE hoặc IntelliJ IDEA.
+Khi mở IDE, chọn workspace là thư mục project RMI Chat.
+</pre>
+---
 <pre>
-src/
-├─ client/
-│  ├─ ClientApp.java          <-- JavaFX main (chạy client)
-│  ├─ loginWindow.java        <-- giao diện đăng nhập & đăng ký
-│  ├─ LobbyWindow.java        <-- sảnh chờ (list groups)
-│  └─ ChatWindow.java         <-- giao diện chat nhóm
-│
-├─ common/
-│  ├─ interfaces/
-│  │   └─ ChatServerInterface.java
-│  └─ model/
-│      ├─ ChatGroup.java
-│      ├─ Message.java
-│      └─ User.java
-│
-├─ server/
-│  ├─ ChatServerImpl.java
-│  └─ ChatServerMain.java     <-- chạy server
-│
-├─ db/
-│  └─ schema_chat.sql
-├─ docs/
-│  ├─ login.png
-│  ├─ lobby.png
-│  └─ chat.png
-└─ pom.xml
+Bước 2: Tạo Project và Cấu trúc
 
+Tạo một Java Project mới trong Eclipse:
+
+File → New → Java Project
+Project name: RMIChatGroup
+JRE: Sử dụng default JRE (Java 8/11/17)
+Bỏ chọn “Create module-info.java”
+→ Finish
+Tạo các package chính:
+src/
+├── common/          (chứa interface và model dùng chung)
+│    ├── ChatServerInterface.java
+│    ├── User.java
+│    └── Message.java
+├── server/          (xử lý logic server, quản lý client)
+│    ├── ChatServerImpl.java
+│    └── ServerMain.java
+└── client/          (ứng dụng phía client, GUI)
+     ├── MainApp.java
+     ├── LoginController.java
+     ├── LobbyController.java
+     └── ChatRoomController.java
+</pre>
+
+Thêm thư mục resources/ để chứa các file FXML:
+<pre>
+resources/
+├── login.fxml
+├── lobby.fxml
+├── chatroom.fxml
+└── welcome.fxml
+</pre>
+---
+<pre>
+Bước 3: Thêm mã nguồn
+
+Copy toàn bộ source code vào đúng package/file tương ứng.
+
+Nhấn Ctrl + Shift + O (Eclipse) để organize imports.
+
+Đảm bảo không có lỗi compile trong Project Explorer.
+</pre>
+---
+<pre>
+Bước 4: Chạy ứng dụng
+
+Khởi động Server:
+
+Mở file ServerMain.java trong package server.
+
+Chạy:
+
+Run As → Java Application
+
+
+Console hiển thị:
+
+RMI Chat Server started...
+Đang chờ client kết nối...
+
+
+Khởi động Client:
+
+Mở file MainApp.java trong package client.
+
+Chạy:
+
+Run As → Java Application
+
+
+Giao diện đăng nhập xuất hiện.
+
+Sau khi đăng nhập thành công:
+
+Màn hình Welcome hiển thị thông điệp chào mừng.
+
+Chuyển đến Lobby (chọn phòng chat).
+
+Vào ChatRoom để trao đổi tin nhắn nhóm.
+
+Khi client kết nối thành công, console server sẽ log:
+
+Client đã kết nối: /127.0.0.1
+</pre>
+
+## 5. Liên hệ cá nhân
+<pre>
+Sinh viên thực hiện: Trịnh Hữu Hiệu
+Khoa công nghệ thông tin – Đại học Đại Nam
+🌐 Website: https://dainam.edu.vn/vi/khoa-cong-nghe-thong-tin
+📧 Email: [trinhhuuhieu19122003@gmail.com]
+📱 Fanpage: AIoTLab - FIT DNU
 </pre>

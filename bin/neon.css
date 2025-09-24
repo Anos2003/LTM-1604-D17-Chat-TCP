@@ -1,0 +1,32 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial";
+    -fx-background-color: linear-gradient(#071226, #0b1a2b);
+    -fx-text-fill: #e6f7ff;
+}
+
+.label.neon-title {
+    -fx-font-size: 28px;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #7df9ff, #a1ffb1);
+    -fx-effect: dropshadow( gaussian , rgba(160,255,255,0.35) , 12,0,0,0);
+    -fx-padding: 8;
+}
+
+.label.neon-title-small {
+    -fx-font-size: 16px;
+    -fx-text-fill: linear-gradient(from 0% 0% to 100% 0%, #d6ffb7, #9ef1ff);
+    -fx-effect: dropshadow( gaussian , rgba(160,255,255,0.20) , 8,0,0,0);
+    -fx-padding: 6;
+}
+
+.button {
+    -fx-background-radius: 8;
+    -fx-padding: 8 12 8 12;
+}
+
+.text-area, .text-field, .list-view {
+    -fx-background-color: rgba(255,255,255,0.04);
+    -fx-text-fill: #e6f7ff;
+    -fx-background-radius: 6;
+    -fx-border-color: rgba(255,255,255,0.08);
+    -fx-border-radius: 6;
+}

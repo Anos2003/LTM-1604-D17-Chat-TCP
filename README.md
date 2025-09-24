@@ -57,7 +57,7 @@ Mục tiêu là minh họa cách xây dựng ứng dụng phân tán bằng **Ja
 
 - 🔑 **Login / Register**  
   ```markdown
-  ![Login/Register](./docs/login2.png)
+  ![Login/Register](./docs/login2.png)         ![Login/Register](./docs/res.png)
 
   🏠 Lobby (Sảnh chờ)
 ![Lobby](./docs/sanh.png)

@@ -57,14 +57,14 @@ Mục tiêu là minh họa cách xây dựng ứng dụng phân tán bằng **Ja
 
 - 🔑 **Login / Register**  
   ```markdown
-  ![Login/Register](./docs/login.png)
+  ![Login/Register](./docs/login2.png)
 
   🏠 Lobby (Sảnh chờ)
-![Lobby](./docs/lobby.png)
+![Lobby](./docs/sanh.png)
 
 💬 Chat Window (Phòng chat)
 
-![Chat Window](./docs/chat.png)
+![Chat Window](./docs/room.png)
 
 ## 4.📝 Các bước cài đặt
 <pre>
@@ -95,29 +95,39 @@ JRE: Sử dụng default JRE (Java 8/11/17)
 Bỏ chọn “Create module-info.java”
 → Finish
 Tạo các package chính:
-src/
-├── common/          (chứa interface và model dùng chung)
-│    ├── ChatServerInterface.java
-│    ├── User.java
-│    └── Message.java
-├── server/          (xử lý logic server, quản lý client)
-│    ├── ChatServerImpl.java
-│    └── ServerMain.java
-└── client/          (ứng dụng phía client, GUI)
-     ├── MainApp.java
-     ├── LoginController.java
-     ├── LobbyController.java
-     └── ChatRoomController.java
+ChatRMIProject/
+│
+├── src/
+│   ├── common/                     # Chứa interface và class chung cho client + server
+│   │   ├── ChatService.java        # Interface RMI
+│   │   ├── ClientCallback.java     # Interface callback từ server -> client
+│   │   └── Message.java            # Class tin nhắn (text/file)
+│   │
+│   ├── server/                     # Server side
+│   │   ├── ChatServiceImpl.java    # Cài đặt ChatService
+│   │   └── ChatServerMain.java     # Chạy server RMI
+│   │
+│   ├── client/                     # Client side
+│   │   ├── ClientCallbackImpl.java # Triển khai callback
+│   │   ├── ChatClientApp.java      # Main test login/register không UI
+│   │   │
+│   │   └── fx/                     # Các UI JavaFX
+│   │       ├── MainApp.java        # Entry point JavaFX
+│   │       ├── WelcomeUI.java      # Giao diện mở đầu
+│   │       ├── LoginUI.java        # Giao diện đăng nhập
+│   │       ├── RegisterUI.java     # Giao diện đăng ký
+│   │       ├── LobbyUI.java        # Giao diện sảnh chờ (3 nhóm mặc định)
+│   │       └── ChatRoomUI.java     # Giao diện nhóm chat
+│   │
+│   └── database/                   # Database tạm thời bằng JSON
+│       └── JsonDatabase.java       # Quản lý đọc/ghi file JSON (users, groups)
+│
+└── resources/
+    ├── neon.css                    # CSS giao diện neon nhẹ nhàng
+    └── users.json                  # DB user tạm (tự tạo khi đăng ký nếu chưa có)
+
 </pre>
 
-Thêm thư mục resources/ để chứa các file FXML:
-<pre>
-resources/
-├── login.fxml
-├── lobby.fxml
-├── chatroom.fxml
-└── welcome.fxml
-</pre>
 ---
 <pre>
 Bước 3: Thêm mã nguồn

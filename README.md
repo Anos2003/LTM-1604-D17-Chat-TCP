@@ -188,7 +188,7 @@ Client đã kết nối: /127.0.0.1
 ## 5. Liên hệ cá nhân
 <pre>
 Sinh viên thực hiện: Trịnh Hữu Hiệu
-Khoa công nghệ thông tin – Đại học Đại Nam
+Khoa công nghệ thông tin – Trường đại học Đại Nam
 🌐 Website: https://dainam.edu.vn/vi/khoa-cong-nghe-thong-tin
 📧 Email: [trinhhuuhieu19122003@gmail.com]
 📱 Fanpage: AIoTLab - FIT DNU

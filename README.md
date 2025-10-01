@@ -57,14 +57,16 @@ Mục tiêu là minh họa cách xây dựng ứng dụng phân tán bằng **Ja
 
 - 🔑 **Login / Register**  
   ```markdown
-  ![Login/Register](./docs/login2.png)
+![Login](./docs/dn.png)
+---
+![Register](./docs/dk.png)
 
   🏠 Lobby (Sảnh chờ)
 ![Lobby](./docs/sanh.png)
 
 💬 Chat Window (Phòng chat)
 
-![Chat Window](./docs/room.png)
+![Chat Window](./docs/chatroom.png)
 
 ## 4.📝 Các bước cài đặt
 <pre>

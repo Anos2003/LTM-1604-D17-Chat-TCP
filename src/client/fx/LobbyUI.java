@@ -14,9 +14,16 @@ public class LobbyUI {
     private final ChatService service;
     private final String username;
 
+    // Constructor gốc
     public LobbyUI(ChatService service, String username) {
         this.service = service;
         this.username = username;
+    }
+
+    // Constructor mới để tương thích với ChatRoomUI khi thoát phòng
+    public LobbyUI(ChatService service, String gname, String username) {
+        this(service, username); // gọi lại constructor gốc
+        // gname không cần dùng ở lobby, nên bỏ qua
     }
 
     public void show() {
@@ -30,7 +37,6 @@ public class LobbyUI {
             lv.setItems(FXCollections.observableArrayList(groups));
         } catch (Exception e) {
             e.printStackTrace();
-            // fallback default groups
             lv.setItems(FXCollections.observableArrayList("General", "Sports", "Tech"));
         }
 
@@ -65,7 +71,6 @@ public class LobbyUI {
                 try {
                     boolean ok = service.joinGroup(username, grp, igname);
                     if (ok) {
-                        // create a callback for this client that will update chatroom UI
                         new ChatRoomUI(service, username, grp, igname).show();
                     } else {
                         showAlert("Không thể tham gia nhóm.");

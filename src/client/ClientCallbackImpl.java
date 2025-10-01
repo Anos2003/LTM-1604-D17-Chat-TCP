@@ -5,15 +5,16 @@ import common.Message;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ClientCallbackImpl extends UnicastRemoteObject implements ClientCallback {
     private static final long serialVersionUID = 1L;
 
     private final Consumer<Message> onMessage;
-    private final java.util.function.Consumer<String> onInfo;
+    private final Consumer<String> onInfo;
 
-    public ClientCallbackImpl(Consumer<Message> onMessage, java.util.function.Consumer<String> onInfo) throws RemoteException {
+    public ClientCallbackImpl(Consumer<Message> onMessage, Consumer<String> onInfo) throws RemoteException {
         super();
         this.onMessage = onMessage;
         this.onInfo = onInfo;
@@ -28,4 +29,10 @@ public class ClientCallbackImpl extends UnicastRemoteObject implements ClientCal
     public void onInfo(String info) throws RemoteException {
         if (onInfo != null) onInfo.accept(info);
     }
+
+	@Override
+	public void onUpdateOnlineUsers(List<String> users) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
 }

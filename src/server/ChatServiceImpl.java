@@ -19,9 +19,8 @@ public class ChatServiceImpl extends UnicastRemoteObject implements ChatService 
     private final Map<String, User> users;
     private final Map<String, ChatGroup> groups;
 
-    // active callbacks
+    // active callbacks (user -> callback)
     private final Map<String, ClientCallback> callbacks = new ConcurrentHashMap<>();
-    // last display name (igname) for a user
     private final Map<String, String> displayNames = new ConcurrentHashMap<>();
 
     protected ChatServiceImpl() throws RemoteException {
@@ -56,6 +55,12 @@ public class ChatServiceImpl extends UnicastRemoteObject implements ChatService 
     }
 
     @Override
+    public void unregisterCallback(String username) throws RemoteException {
+        callbacks.remove(username);
+        System.out.println("[SERVER] Callback unregistered: " + username);
+    }
+
+    @Override
     public List<String> getGroups() throws RemoteException {
         return new ArrayList<>(groups.keySet());
     }
@@ -75,10 +80,41 @@ public class ChatServiceImpl extends UnicastRemoteObject implements ChatService 
         if (g == null) return false;
         if (!g.members.contains(username)) g.members.add(username);
         db.writeGroups(groups);
-        displayNames.put(username, igname);
-        String welcome = "Chào mừng " + igname + " đã gia nhập nhóm chat " + groupName;
-        broadcastInfo(welcome);
+
+        if (igname != null && !igname.isEmpty()) {
+            displayNames.put(username, igname);
+        }
+
+        String welcome = "Chào mừng " + displayNames.getOrDefault(username, username) +
+                " đã gia nhập nhóm chat " + groupName;
+        broadcastInfoToGroup(groupName, welcome);
         return true;
+    }
+
+    @Override
+    public synchronized boolean leaveGroup(String username, String groupName) throws RemoteException {
+        ChatGroup g = groups.get(groupName);
+        if (g == null) return false;
+        boolean existed = g.members.remove(username);
+        if (!existed) return false;
+        db.writeGroups(groups);
+
+        String nameToShow = displayNames.getOrDefault(username, username);
+
+        Message sysMsg = new Message("system", "SYSTEM",
+                "Người dùng \"" + nameToShow + "\" đã rời phòng \"" + groupName + "\"", groupName);
+        sysMsg.isSystem = true;
+
+        broadcastToGroup(groupName, sysMsg);
+        System.out.println("[SERVER] User " + username + " left group " + groupName);
+        return true;
+    }
+
+    @Override
+    public void sendTyping(String username, String groupName) throws RemoteException {
+        String igname = displayNames.getOrDefault(username, username);
+        String info = igname + " đang nhập...";
+        broadcastInfoToGroup(groupName, info);
     }
 
     @Override
@@ -94,7 +130,20 @@ public class ChatServiceImpl extends UnicastRemoteObject implements ChatService 
         broadcastToGroup(m.group, m);
     }
 
-    // send message to members only
+    @Override
+    public synchronized List<String> getOnlineUsers() throws RemoteException {
+        List<String> result = new ArrayList<>();
+        for (String user : callbacks.keySet()) {
+            String dn = displayNames.get(user);
+            if (dn != null && !dn.isEmpty() && !dn.equals(user)) {
+                result.add(dn + " (" + user + ")");
+            } else {
+                result.add(user);
+            }
+        }
+        return result;
+    }
+
     private void broadcastToGroup(String groupName, Message m) {
         ChatGroup g = groups.get(groupName);
         if (g == null) return;
@@ -111,7 +160,6 @@ public class ChatServiceImpl extends UnicastRemoteObject implements ChatService 
         }
     }
 
-    // broadcast info to all connected callbacks
     private void broadcastInfo(String info) {
         callbacks.forEach((user, cb) -> {
             try {
@@ -120,5 +168,21 @@ public class ChatServiceImpl extends UnicastRemoteObject implements ChatService 
                 callbacks.remove(user);
             }
         });
+    }
+
+    private void broadcastInfoToGroup(String groupName, String info) {
+        ChatGroup g = groups.get(groupName);
+        if (g == null) return;
+        for (String member : new ArrayList<>(g.members)) {
+            ClientCallback cb = callbacks.get(member);
+            if (cb != null) {
+                try {
+                    cb.onInfo(info);
+                } catch (Exception e) {
+                    callbacks.remove(member);
+                    System.out.println("[SERVER] Removed callback for " + member);
+                }
+            }
+        }
     }
 }

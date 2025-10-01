@@ -17,6 +17,7 @@ public class LoginUI {
 
     public void show() {
         Stage s = MainApp.primaryStage;
+        
         Label title = new Label("Đăng nhập");
         title.getStyleClass().add("neon-title");
 

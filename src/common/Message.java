@@ -15,6 +15,11 @@ public class Message implements Serializable {
     public String fileName;
     public byte[] fileData;
 
+    // ✅ thêm cờ hệ thống
+    public boolean isSystem = false;
+
+    private String type; // phân biệt loại message
+
     public Message() {
         time = LocalDateTime.now();
     }
@@ -27,4 +32,12 @@ public class Message implements Serializable {
         this.time = LocalDateTime.now();
         this.isFile = false;
     }
+
+    // Getter & Setter
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    public String getGroup() { return group; }
+    public void setGroup(String group) { this.group = group; }
+    public String getFrom() { return from; }
+    public void setFrom(String from) { this.from = from; }
 }
